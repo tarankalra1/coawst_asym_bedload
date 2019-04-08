@@ -1,0 +1,579 @@
+bestnpz.h:      CALL wclock_on (ng, iNLM, 15)
+bestnpz.h:      CALL biology_tile (ng, tile,                                      &
+bestnpz.h:      CALL wclock_off (ng, iNLM, 15)
+bestnpz.h:      CALL caldate (r_date, tdays(ng), year, yday, month, iday, hour)
+bestnpz.h:          CALL BIOSINK_1(ng,wPhS,Bio(IminS,1,iPhS),sinkIN,              &
+bestnpz.h:          CALL BIOSINK_1(ng,wPhL,Bio(IminS,1,iPhL),sinkIN,              &
+bestnpz.h:          CALL BIOSINK_1(ng,wDet,Bio(IminS,1,iDet),sinkIN,              &
+bestnpz.h:          call BIOSINK_1(ng,wDetF,Bio(IminS,1,iDetF),sinkIN,            &
+bestnpz.h:!          call BIOSINK(ng,wPhS,Bio(LBi-1,1,iPhS),DBio(LBi-1,1,iPhS),    &
+bestnpz.h:!          call BIOSINK(ng,wPhL,Bio(LBi-1,1,iPhL),DBio(LBi-1,1,iPhL),    &
+bestnpz.h:!          call DetSINK(ng,wDet,Bio(LBi-1,1,iDet),DBio(LBi-1,1,iDet),  &
+bestnpz.h:            call BIOSINK_1(ng,wNCsink,Bio(IminS,1,iNCa),sinkIN,         &
+bestnpz.h:!             call BIOSINK_2(ng,wNCsink,Bio(LBi-1,1,iNCa),              &
+bestnpz.h:            call BIORISE_1(ng,wNCsink,Bio(LBi-1,1,iNCa),riseOUT,        &
+bestnpz.h:!             call BIORISE(ng,wNCrise,Bio(LBi-1,1,iNCa),                &
+bestnpz.h:! This check used to be outside the whole function call.
+ecosim.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+ecosim.h:      CALL biology_tile (ng, tile,                                      &
+ecosim.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+ecosim.h:!  light adaptation. Minimum of two functions may be more ecologically
+ecosim_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+ecosim_wrt.h:      CALL netcdf_put_lvar (ng, model, ncname, 'RtUVR_flag',            &
+ecosim_wrt.h:      CALL netcdf_put_lvar (ng, model, ncname, 'NFIX_flag',             &
+ecosim_wrt.h:      CALL netcdf_put_lvar (ng, model, ncname, 'Regen_flag',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsNO3',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsNH4',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsSiO',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsPO4',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsFe',                  &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GtALG_max',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyTbase',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyTfac',               &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BET_',                  &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'maxC2nALG',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'minC2nALG',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2nALGminABS',          &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'maxC2SiALG',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'minC2SiALG',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2SiALGminABS',         &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'maxC2pALG',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'minC2pALG',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2pALGminABS',          &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'maxC2FeALG',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'minC2FeALG',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2FeALGminABS',         &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'qu_yld',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'E0_comp',               &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'E0_inhib',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'inhib_fac',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2CHL_max',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxC2Cl',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_C2Cl',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxC2Cn',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_C2Cn',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxPacEff',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_PacEff',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxChlB',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_ChlB',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxChlC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_ChlC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxPSC',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_PSC',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxPPC',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_PPC',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxLPUb',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_LPUb',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mxHPUb',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'b_HPUb',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'FecDOC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'FecPEL',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'FecCYC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ExALG',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'WS',                    &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsGRZ',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'MinRefuge',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RefugeDep',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Norm_Vol',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Norm_Surf',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsDOP',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2pALKPHOS',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsDON',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2nNupDON',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsDOC_ba',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GtBAC_max',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BacTbase',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BacTfac',               &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2nBAC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2pBAC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'C2FeBAC',               &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BacDOC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BacPEL',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BacCYC',                &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ExBAC_c',               &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ExBacC2N',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Bac_Ceff',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtNIT',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'HsNIT',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'cDOCfrac_c',            &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtUVR_DIC',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtUVR_DOC',             &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'WF',                    &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegTbase',              &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegTfac',               &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegCR',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegNR',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegSR',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegPR',                 &
+ecosim_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RegFR',                 &
+estuarybgc_def.h:      Vinfo( 2)='photosynthetically available radiation fraction'
+estuarybgc.h:!  biologically availalbe fixed nitrogen. See Fennel et al. (2006)     !
+estuarybgc.h:!  treated diagnostically (default),  in this case alkalinity acts     !
+estuarybgc.h:      CALL wclock_on (ng, iNLM, 15)
+estuarybgc.h:      CALL biology_tile (ng, tile,                                      &
+estuarybgc.h:      CALL wclock_off (ng, iNLM, 15)
+estuarybgc.h:!  Calculate surface Photosynthetically Available Radiation (PAR).  The
+estuarybgc.h:!  the fraction that is photosynthetically available, PARfrac.
+estuarybgc.h:!  photosynthetically available radiation (PARsur) down inot the
+estuarybgc.h:          CALL pCO2_water_RZ (Istr, Iend, LBi, UBi, LBj, UBj,           &
+estuarybgc.h:          CALL pCO2_water (Istr, Iend, LBi, UBi, LBj, UBj,              &
+estuarybgc.h:            CALL caldate (r_date, tdays(ng), year, yday, month, iday,   &
+estuarybgc.h:!  Calling the SAV MODEL developed by Dr. Jeremy Testa 
+estuarybgc.h:              CALL SAV_BIOMASS (ng, Istr, Iend, LBi, UBi,                 &
+estuarybgc_inp.h:     &            'photosynthetically active (nondimensional).'
+estuarybgc_mod.h:      integer :: idPARo                 ! PAR    Photosynthetically Available Radiation (PAR)
+estuarybgc_var.h:**  Photosynthetically Available Radiation (PAR)..
+estuarybgc_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttSW',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttChl',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PARfrac',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Vp0',                   &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'I_thNH4',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'D_p5NH4',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'NitriR',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NH4',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_Phy',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Chl2C_m',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ChlMin',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyCN',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyIP',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyIS',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMin',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMR',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooAE_N',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooBM',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooCN',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooER',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooGR',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMin',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMR',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LDeRRN',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LDeRRC',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'CoagR',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SDeRRN',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SDeRRC',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wPhy',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wLDet',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wSDet',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'pCO2air',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SIGATRB',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'STRB',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BLTRB',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SIGBTRB',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ETASPEC',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BB2B',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'GMODopt',               &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KNSED',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KNWC',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'TOPT',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'THTA',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'THTA2',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SCL',                   &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SCL2',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KI',                    &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SR',                    &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LMBAMX',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KMAG',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ARSC',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ARC',                   &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BSRC',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RC',                    &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtStTL',                &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'DOWNt',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'TRNS',                  &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'TCRIT',                 &
+estuarybgc_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KM',                    &
+fennel_def.h:      Vinfo( 2)='photosynthetically available radiation fraction'
+fennel.h:!  biologically availalbe fixed nitrogen. See Fennel et al. (2006)     !
+fennel.h:!  treated diagnostically (default),  in this case alkalinity acts     !
+fennel.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+fennel.h:      CALL biology_tile (ng, tile,                                      &
+fennel.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+fennel.h:!  Calculate surface Photosynthetically Available Radiation (PAR).  The
+fennel.h:!  the fraction that is photosynthetically available, PARfrac.
+fennel.h:!  photosynthetically available radiation (PARsur) down inot the
+fennel.h:          CALL pCO2_water_RZ (Istr, Iend, LBi, UBi, LBj, UBj,           &
+fennel.h:          CALL pCO2_water (Istr, Iend, LBi, UBi, LBj, UBj,              &
+fennel.h:            CALL caldate (tdays(ng), yd_r8=yday)
+fennel_inp.h:     &            'photosynthetically active (nondimensional).'
+fennel_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttSW',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttChl',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PARfrac',               &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Vp0',                   &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'I_thNH4',               &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'D_p5NH4',               &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'NitriR',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NH4',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_Phy',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Chl2C_m',               &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ChlMin',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyCN',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyIP',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyIS',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMin',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMR',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooAE_N',               &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooBM',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooCN',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooER',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooGR',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMin',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMR',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LDeRRN',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LDeRRC',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'CoagR',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SDeRRN',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SDeRRC',                &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wPhy',                  &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wLDet',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wSDet',                 &
+fennel_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'pCO2air',               &
+hypoxia_srm.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+hypoxia_srm.h:      CALL biology_tile (ng, tile,                                      &
+hypoxia_srm.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+hypoxia_srm_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+hypoxia_srm_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ResRate',               &
+Module.mk:$(eval $(call make-library,$(local_lib),$(local_src)))
+nemuro_def.h:      Vinfo( 2)='photosynthetically available radiation fraction'
+nemuro.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+nemuro.h:      CALL biology_tile (ng, tile,                                      &
+nemuro.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+nemuro.h:!  Calculate surface Photosynthetically Available Radiation (PAR).  The
+nemuro.h:!  the fraction that is photosynthetically available, PARfrac.
+nemuro.h:!  type s-shaped curve. It is known to be numerically more stable and
+nemuro_inp.h:     &            'photosynthetically active (nondimensional).'
+nemuro_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttSW',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttPS',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttPL',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PARfrac',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AlphaPS',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AlphaPL',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BetaPS',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BetaPL',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'VmaxS',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'VmaxL',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3S',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3L',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NH4S',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NH4L',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_SiL',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PusaiS',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PusaiL',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KGppS',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KGppL',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ResPS0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ResPL0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KResPS',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KResPL',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GammaS',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GammaL',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'MorPS0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'MorPL0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KMorPS',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KMorPL',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxSps',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxSpl',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxLps',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxLpl',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxLzs',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxPpl',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxPzs',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'GRmaxPzl',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KGraS',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KGraL',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KGraP',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LamS',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LamL',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LamP',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_PS2ZS',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_PL2ZS',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_PS2ZL',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_PL2ZL',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_ZS2ZL',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_PL2ZP',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_ZS2ZP',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_ZL2ZP',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PS2ZSstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PL2ZSstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PS2ZLstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PL2ZLstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PL2ZLstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PL2ZPstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZS2ZPstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZL2ZPstar',             &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PusaiPL',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PusaiZS',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'MorZS0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'MorZL0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'MorZP0',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AlphaZS',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AlphaZL',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AlphaZP',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BetaZS',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BetaZL',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'BetaZP',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Nit0',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'VP2N0',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'VP2D0',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'VD2N0',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'VO2S0',                 &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KNit',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KNit',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KP2D',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KP2N',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KD2N',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'KO2S',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RSiN',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'setVPON',               &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'setVOpal',              &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'T_Fe',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'A_Fe',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'B_Fe',                  &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'SK_FeC',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'LK_FeC',                &
+nemuro_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'FeRR',                  &
+npzd_Franks.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+npzd_Franks.h:      CALL biology_tile (ng, tile,                                      &
+npzd_Franks.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+npzd_Franks_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_ext',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_Phy',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Vm_NO3',                &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMR',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooGR',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMR',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMD',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooGA',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooEC',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'DetRR',                 &
+npzd_Franks_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wDet',                  &
+npzd_iron_def.h:      Vinfo( 2)='photosynthetically available radiation fraction'
+npzd_iron.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+npzd_iron.h:      CALL biology_tile (ng, tile,                                      &
+npzd_iron.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+npzd_iron.h:!  Calculate surface Photosynthetically Available Radiation (PAR).  The
+npzd_iron.h:!  the fraction that is photosynthetically available, PARfrac.
+npzd_iron_inp.h:     &            'photosynthetically active (nondimensional).'
+npzd_iron_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PARfrac',               &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttSW',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttPhy',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyIS',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Vm_NO3',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMRD',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMRN',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Ivlev',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooGR',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooEED',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooEEN',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMRD',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMRN',                &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'DetRR',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wPhy',                  &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wDet',                  &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'T_Fe',                  &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'A_Fe',                  &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'B_Fe',                  &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_FeC',                 &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'FeRR',                  &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Fe_Hmin',               &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Fe_NudgTime',           &
+npzd_iron_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Fe_max',                &
+npzd_Powell.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+npzd_Powell.h:      CALL biology_tile (ng, tile,                                      &
+npzd_Powell.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+npzd_Powell.h:!  Calculate surface Photosynthetically Available Radiation (PAR).  The
+npzd_Powell.h:!  the fraction that is photosynthetically available, PARfrac.
+npzd_Powell_inp.h:     &            'photosynthetically active (nondimensional).'
+npzd_Powell_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttSW',                 &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttPhy',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyIS',                 &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Vm_NO3',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMRD',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PhyMRN',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'K_NO3',                 &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Ivlev',                 &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooGR',                 &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooEED',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooEEN',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMRD',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ZooMRN',                &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'DetRR',                 &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wPhy',                  &
+npzd_Powell_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wDet',                  &
+oyster_floats.h:      CALL wclock_on (ng, iNLM, 10, __LINE__, __FILE__)
+oyster_floats.h:      CALL biology_floats_tile (ng, Lstr, Lend,                         &
+oyster_floats.h:      CALL wclock_off (ng, iNLM, 10, __LINE__, __FILE__)
+oyster_floats_inp.h:      CALL allocate_behavior
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Larvae_GR0',            &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Larvae_size0',          &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'food_supply',           &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'settle_size',           &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_ambi',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_axis',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_base',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_crit',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_mean',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_rate',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_size',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'turb_slop',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'slope_Sdec',            &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'slope_Sinc',            &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'swim_Sdec',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'swim_Sinc',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'swim_Tmin',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'swim_Tmax',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'sink_base',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'sink_rate',             &
+oyster_floats_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'sink_size',             &
+red_tide.h:      CALL wclock_on (ng, iNLM, 15, __LINE__, __FILE__)
+red_tide.h:      CALL biology_tile (ng, tile,                                      &
+red_tide.h:      CALL wclock_off (ng, iNLM, 15, __LINE__, __FILE__)
+red_tide.h:        CALL caldate (tdays(ng), yd_r8=yday)
+red_tide_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Gmax',                  &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Dg',                    &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Kn',                    &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'G_eff',                 &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'G_r',                   &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttW',                  &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'AttS',                  &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'E_light',               &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'E_dark',                &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Tmin_growth',           &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'DIN_Cdepth',            &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wDino',                 &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Mor_a',                 &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Mor_b',                 &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Mor_Q10',               &
+red_tide_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Mor_T0',                &
+umaine_def.h:      Vinfo( 2)='photosynthetically available radiation fraction'
+umaine.h:      CALL wclock_on (ng, iNLM, 15)
+umaine.h:      CALL biology_tile (ng, tile,                                      &
+umaine.h:      CALL wclock_off (ng, iNLM, 15)
+umaine.h:!  Calculate surface Photosynthetically Available Radiation (PAR).  The
+umaine.h:!  the fraction that is photosynthetically available, PARfrac.
+umaine.h:          call daily_par(latr(i,j),dent3,unit4)
+umaine.h:!call optics to derive in-water light
+umaine.h:      call optic_property(Istr, Iend, ng,                               &
+umaine.h:          CALL O2_flux (Istr, Iend, LBi, UBi, LBj, UBj,                 &
+umaine.h:      CALL CO2_flux (Istr, Iend, LBi, UBi, LBj, UBj,                    &
+umaine.h:      CALL co2calc(t(i),s(i),dic2,alk2,po42,si2,phlo,phhi,               &
+umaine.h:!C       call co2calc(t,s,dic_in,ta_in,pt_in,sit_in
+umaine.h:      call drtsafe(x1,x2,xacc,                                         &
+umaine.h:      CALL ta_iter_1(X1,FL,DF,k0,k1,k2,k1p,k2p,k3p,st,ks,dic,bt,kb,   &
+umaine.h:      CALL ta_iter_1(X2,FH,DF,k0,k1,k2,k1p,k2p,k3p,st,ks,dic,bt,kb,   &
+umaine.h:      CALL ta_iter_1(DRTSAFE2,F,DF,k0,k1,k2,k1p,k2p,k3p,st,ks,dic,bt, &
+umaine.h:      CALL ta_iter_1(DRTSAFE2,F,DF,k0,k1,k2,k1p,k2p,k3p,st,ks,dic,bt,  &
+umaine.h:!C htotal. It is used in the iterative solution for htotal. In the call
+umaine_inp.h:     &            'photosynthetically active (nondimensional).'
+umaine_wrt.h:      CALL netcdf_put_ivar (ng, model, ncname, 'BioIter',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'reg1',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'reg2',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'gmaxs1',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'gmaxs2',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'gmaxs3',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'beta1',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'beta2',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akz1',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akz2',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'PARfrac',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'alphachl_s1',           &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'alphachl_s2',           &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'alphachl_s3',           &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'pis1',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'pis2',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'pis3',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akno3s1',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akno3s2',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akno3s3',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'aknh4s1',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'aknh4s2',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'aknh4s3',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akpo4s1',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akpo4s2',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akpo4s3',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akco2s1',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akco2s2',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'akco2s3',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'aksio4s2',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ES1',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ES2',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ES3',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ak1',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ak2',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Qmax',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'Qmin',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'lambdano3_s1',          &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'lambdano3_s2',          &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'lambdano3_s3',          &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'thetaNmax_s1',          &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'thetaNmax_s2',          &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'thetaNmax_s3',          &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma1',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma2',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma22',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma3',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma4',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma10',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma12',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma5',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma7',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma11',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'bgamma13',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mtos1',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mtos2',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'mtos3',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'flz1',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'flz2',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'lk1',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'lk2',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'lk3',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ratiol1',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ratiol2',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsdn',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsdc',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsdsi',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsdca',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsp1',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsp2',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'wsp3',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'pco2a',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'p2n',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'o2no',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'o2nh',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'cnb',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'apsilon',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ro5',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ro6',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ro7',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ro10',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'rop',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'rob',                   &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'kabac',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'klbac',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ksdoc',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ksdon',                 &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ratiob',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'ratiobc',               &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtUVLDOC',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtUVSDOC',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtUVLDIC',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'RtUVSDIC',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'colorFR1',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'colorFR2',              &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'T_Fe',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'A_Fe',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'B_Fe',                  &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'S1_FeC',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'S2_FeC',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'S3_FeC',                &
+umaine_wrt.h:      CALL netcdf_put_fvar (ng, model, ncname, 'FeRR',                  &
