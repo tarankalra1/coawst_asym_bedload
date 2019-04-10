@@ -239,7 +239,7 @@
       real(r8), intent(in) :: vbar(LBi:UBi,LBj:UBj,3)
       real(r8), intent(in) :: u(LBi:UBi,LBj:UBj,N(ng),2)
       real(r8), intent(in) :: v(LBi:UBi,LBj:UBj,N(ng),2)
-# if defined BEDLOAD_VANDEARA_STOKES
+# if defined BEDLOAD_VANDERA_STOKES
       real(r8), intent(in) :: ubar_stokes(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: vbar_stokes(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: u_stokes(LBi:UBi,LBj:UBj,N(ng))
@@ -356,10 +356,6 @@
 !
 #  if defined BEDLOAD_VANDERA_MADSEN
 !
-!  Fixed wave boundary layer elevation.
-!
-!      real(r8), parameter :: sg_zwbl=0.1_r8
-!
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: Ur_sgwbl
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: Vr_sgwbl
       real(r8) :: Ucur_sgwbl, Vcur_sgwbl
@@ -378,145 +374,49 @@
 ! Calculate bottom cell thickness
 !
           Zr(i,j)=z_r(i,j,1)-z_w(i,j,0)
-          Ur_sg(i,j)=u(i,j,1,nrhs)
-          Vr_sg(i,j)=v(i,j,1,nrhs)
-#  ifdef BEDLOAD_VANDERA_STOKES
-          Ur_sg(i,j)=Ur_sg(i,j)+u_stokes(i,j,1)
-          Vr_sg(i,j)=Vr_sg(i,j)+v_stokes(i,j,1)
-#  endif
 !
-! Use a fix Zr (sg_z1min), interpolate to get Ur at Zr
-! to be used in Madsen function.
+#  if defined SSW_LOGINT 
 !
-#  if defined SSW_LOGINT
-#   ifdef JCW_BBLTHICK
+!  If using the logarithmic interpolation 
+!
+#   if defined BEDLOAD_VANDERA_MADSEN 
           Dstp=z_r(i,j,N(ng))-z_w(i,j,0)
-          sg_z1min=MIN(0.98_r8*Dstp,MAX(thck_wbl(i,j)*1.1_r8,Zr(i,j)))
-#   endif
-!
-! If chosen height is greater than the bottom cell thickness.
-!
-          IF ( sg_z1min.ge.Zr(i,j) ) THEN
-!
-!  If chosen height to get near bottom-current velocity lies
-!  within any vertical level, perform logarithmic interpolation.
-!
-            DO k=2,N(ng)
-              z1=z_r(i,j,k-1)-z_w(i,j,0)
-              z2=z_r(i,j,k  )-z_w(i,j,0)
-              IF ( ( z1.le.sg_z1min ).and.( sg_z1min.lt.z2 )) THEN
-                fac=1.0_r8/LOG(z2/z1)
-                fac1=fac*LOG(z2/sg_z1min)
-                fac2=fac*LOG(sg_z1min/z1)
-!
-#   ifdef BEDLOAD_VANDERA_STOKES
-                Ur_sg(i,j)=fac1*( u(i,j,k-1,nrhs)+                      &
-     &                            u_stokes(i,j,k-1) )+                  &
-     &                     fac2*( u(i,j,k,nrhs)+                        &
-     &                            u_stokes(i,j,k)   )
-                Vr_sg(i,j)=fac1*( v(i,j,k-1,nrhs)+                      &
-     &                            v_stokes(i,j,k-1) )+                  &
-     &                     fac2*( v(i,j,k,nrhs)+                        &
-     &                            v_stokes(i,j,k)   )
-#   else
-                Ur_sg(i,j)=fac1*u(i,j,k-1,nrhs)+fac2*u(i,j,k,nrhs)
-                Vr_sg(i,j)=fac1*v(i,j,k-1,nrhs)+fac2*v(i,j,k,nrhs)
-#   endif
-!
-                Zr(i,j)=sg_z1min
-              ENDIF
-            END DO 
-!
-! If chosen height is greater than the depth
-! then modify the the sg_z1min, then perform the logarithmic interpolation.
-!
-          ELSEIF ( sg_z1min.gt.z2 ) THEN
-!
-#   ifdef BEDLOAD_VANDERA_STOKES
-              Ur_sg(i,j)=ubar(i,j,nrhs)+ubar_stokes(i,j)
-              Vr_sg(i,j)=vbar(i,j,nrhs)+vbar_stokes(i,j)
-#   else
-              Ur_sg(i,j)=ubar(i,j,nrhs)
-              Vr_sg(i,j)=vbar(i,j,nrhs)
-#   endif
-!
-!jcw              Zr(i,j)=0.4_r8*z2
-!
-!            END IF
-!
-          ELSEIF ( sg_z1min.lt.Zr(i,j) ) THEN
-            d50=bottom(i,j,isd50)
-            z1=MAX( 2.5_r8*d50/30.0_r8, bottom(i,j,izapp) )
-            z2=Zr(i,j)
-!
-            IF ( sg_z1min.lt.z1 ) THEN
-!
-! If chosen height is less than the bottom roughness
-! perform linear interpolation.
-!
-              z1=sg_z1min
-              fac=z1/z2
-!
-#   ifdef BEDLOAD_VANDERA_STOKES
-              Ur_sg(i,j)=fac*(u(i,j,1,nrhs)+u_stokes(i,j,1))
-              Vr_sg(i,j)=fac*(v(i,j,1,nrhs)+v_stokes(i,j,1))
-#   else
-              Ur_sg(i,j)=fac*u(i,j,1,nrhs)
-              Vr_sg(i,j)=fac*v(i,j,1,nrhs)
-#   endif
-              Zr(i,j)=sg_z1min
-!
-            ELSEIF ( sg_z1min.gt.z1 ) THEN
-!
-! If chosen height is less than the bottom cell thickness
-! perform logarithmic interpolation with bottom roughness.
-!
-              fac=1.0_r8/LOG(z2/z1)
-              fac2=fac*LOG(sg_z1min/z1)
-!
-#   ifdef BEDLOAD_VANDERA_STOKES
-              Ur_sg(i,j)=fac2*(u(i,j,1,nrhs)+u_stokes(i,j,1))
-              Vr_sg(i,j)=fac2*(v(i,j,1,nrhs)+v_stokes(i,j,1))
-#   else
-              Ur_sg(i,j)=fac2*u(i,j,1,nrhs)
-              Vr_sg(i,j)=fac2*v(i,j,1,nrhs)
-#   endif
-              Zr(i,j)=sg_z1min
-            END IF
-          END IF
-!
-! end of SSW_LOGINT
-!
-#  endif
-#  if defined BEDLOAD_VANDERA_MADSEN
-          Zr_wbl(i,j)=Zr(i,j)
-#  endif
-!
-#  if defined BEDLOAD_VANDERA_MADSEN
-#   ifdef BEDLOAD_VANDERA_ELEVATION_LIMITER
-!
-! Add a limiter incase chosen sg_zwbl > Depth
-!
-          cff=MIN( 0.98_r8*Dstp, sg_zwbl(ng) )
+          sg_z1min=MIN(0.98_r8*Dstp,MAX(Zr(i,j), thck_wbl(i,j)*1.1_r8))
+#   else 
+! 
+! Use the original coded ssw_logint formulation
+!                                             
+          sg_z1min=sg_z1min
 #   endif 
 !
-! Use a user defined, fixed thickness of wave boundary layer.
-!
-          cff1=MAX( cff, 1.1_r8*ksd_wbl(i,j) )   
-!
-          CALL angle_cwwbl(N(ng), Dstp, cff1,                           &
+          CALL log_interp( N(ng), Dstp, sg_z1min,                       &
      &                 u(i,j,:,nrhs),     v(i,j,:,nrhs),                &
 #   ifdef BEDLOAD_VANDERA_STOKES     
      &                 u_stokes(i,j,:),   v_stokes(i,j,:),              &
-#   endif 
+#   endif
      &                 z_r(i,j,:),        z_w(i,j,:),                   &
      &                 ubar(i,j,nrhs),    vbar(i,j,nrhs),               &
 #   ifdef BEDLOAD_VANDERA_STOKES
      &                 ubar_stokes(i,j),  vbar_stokes(i,j),             &
-#   endif 
-     &                 bottom(i,j,isd50), bottom(i,j,izapp),            & 
-     &                 Ur_sgwbl(i,j), Vr_sgwbl(i,j))
-#  endif
+#   endif
+     &                 bottom(i,j,isd50), bottom(i,j,izapp),            &
+     &                 Zr(i,j),                                         & 
+     &                 Ur_sg(i,j),        Vr_sg(i,j) )
+!
+! end of SSW_LOGINT
+!
+#  else 
+!
+! Regular method to get reference velocity for Madsen
+! without using log interp by the bottom cell. 
+!
+          Ur_sg(i,j)=u(i,j,1,nrhs)
+          Vr_sg(i,j)=v(i,j,1,nrhs)
+#   ifdef BEDLOAD_VANDERA_STOKES
+          Ur_sg(i,j)=Ur_sg(i,j)+u_stokes(i,j,1)
+          Vr_sg(i,j)=Vr_sg(i,j)+v_stokes(i,j,1)
+#   endif
+#  endif 
 !
         END DO
       END DO
@@ -562,23 +462,6 @@
           ENDIF
           phicw(i,j)=1.5_r8*pi-Dwave(i,j)-phic(i,j)-angler(i,j)
 !
-#  if defined BEDLOAD_VANDERA_MADSEN
-!
-!  Compute bottom current magnitude at RHO-points.
-!
-          Ucur_sgwbl=0.5_r8*(Ur_sgwbl(i,j)+Ur_sgwbl(i+1,j))
-          Vcur_sgwbl=0.5_r8*(Vr_sgwbl(i,j)+Vr_sgwbl(i,j+1))
-!
-!  Compute angle between currents at the user input elevation
-!  to find currents for asymmetric bedload transport. 
-!
-          IF (Ucur_sgwbl.eq.0.0_r8) THEN
-            phic_sgwbl(i,j)=0.5_r8*pi*SIGN(1.0_r8,Vcur_sgwbl)
-          ELSE
-            phic_sgwbl(i,j)=ATAN2(Vcur_sgwbl,Ucur_sgwbl)
-          ENDIF
-!
-#  endif 
         END DO
       END DO
 !
@@ -862,28 +745,81 @@
             ksd_wbl(i,j)=m_zoa
             ustrc_wbl(i,j)=m_ustrc
             thck_wbl(i,j)=m_dwc
-!
-# ifdef BEDLOAD_VANDERA_ELEVATION_LIMITER
-! Add a limiter incase chosen sg_zwbl > Depth
-!
-            cff=MIN( 0.98_r8*Dstp, sg_zwbl(ng) )
-# endif 
-!
-! Use a user defined, fixed thickness of wave boundary layer.
-!
-            cff1=MAX( cff, 1.1_r8*ksd_wbl(i,j) )   
-            cff2=LOG(cff1/ksd_wbl(i,j))
-!
-# ifdef BEDLOAD_VANDERA_ZEROCURR
-            udelta_wbl(i,j)=0.0_r8
-# else
-            udelta_wbl(i,j)=(ustrc_wbl(i,j)/vonKar)*cff2
-# endif
 #endif
 !
           END IF
         END DO
       END DO
+!
+#  if defined BEDLOAD_VANDERA_MADSEN
+! 
+! Find the near-bottom current velocity at a given elevation
+! Find the angle at that near-bottom current velocity. 
+!
+      DO j=JstrV-1,Jend+1
+        DO i=IstrU-1,Iend+1
+!
+          Dstp=z_r(i,j,N(ng))-z_w(i,j,0)
+!
+#   ifdef BEDLOAD_VANDERA_CALC_WBL
+! Use wave boundary layer (wbl) thickness based on Madsen to get 
+! near bottom current velocity.
+!
+          cff=MIN( 0.98_r8*Dstp, thck_wbl(i,j) )
+#   else 
+!
+! Use user input elevation to get near bottom current velocity. 
+!
+          cff=MIN (0.98_r8*Dstp, sg_zwbl(ng) ) 
+#   endif 
+!
+! Make sure that wbl is under total depth and greater than
+! apparent roughness. 
+!
+          cff1=MAX( cff, 1.1_r8*ksd_wbl(i,j) )   
+          cff2=LOG(cff1/ksd_wbl(i,j))
+#   ifdef BEDLOAD_VANDERA_ZEROCURR
+          udelta_wbl(i,j)=0.0_r8
+#   else
+          udelta_wbl(i,j)=(ustrc_wbl(i,j)/vonKar)*cff2
+#   endif   
+!
+          CALL log_interp( N(ng), Dstp, cff1,                           &
+     &                 u(i,j,:,nrhs),     v(i,j,:,nrhs),                &
+#   ifdef BEDLOAD_VANDERA_STOKES     
+     &                 u_stokes(i,j,:),   v_stokes(i,j,:),              &
+#   endif 
+     &                 z_r(i,j,:),        z_w(i,j,:),                   &
+     &                 ubar(i,j,nrhs),    vbar(i,j,nrhs),               &
+#   ifdef BEDLOAD_VANDERA_STOKES
+     &                 ubar_stokes(i,j),  vbar_stokes(i,j),             &
+#   endif 
+     &                 bottom(i,j,isd50), bottom(i,j,izapp),            & 
+     &                 Zr_wbl(i,j),                                     & 
+     &                 Ur_sgwbl(i,j),     Vr_sgwbl(i,j) )
+!
+        END DO
+      END DO
+!
+!  Compute angle between currents at an elevation
+!  to find currents to obtain asymmetric bedload transport.
+!
+      DO j=JstrV-1,Jend
+        DO i=IstrU-1,Iend
+!
+!  Compute bottom current magnitude at RHO-points.
+!
+          Ucur_sgwbl=0.5_r8*(Ur_sgwbl(i,j)+Ur_sgwbl(i+1,j))
+          Vcur_sgwbl=0.5_r8*(Vr_sgwbl(i,j)+Vr_sgwbl(i,j+1))
+!
+          IF (Ucur_sgwbl.eq.0.0_r8) THEN
+            phic_sgwbl(i,j)=0.5_r8*pi*SIGN(1.0_r8,Vcur_sgwbl)
+          ELSE
+            phic_sgwbl(i,j)=ATAN2(Vcur_sgwbl,Ucur_sgwbl)
+          ENDIF
+        END DO
+      END DO
+#  endif 
 !
 !-----------------------------------------------------------------------
 !  Compute kinematic bottom stress components due current and wind-
@@ -1080,6 +1016,9 @@
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
      &                  udelta_wbl)
+      CALL bc_r2d_tile (ng, tile,                                       &
+     &                  LBi, UBi, LBj, UBj,                             &
+     &                  phic_sgwbl)
 #endif
 #ifdef DISTRIBUTE
       CALL mp_exchange2d (ng, tile, iNLM, 4,                            &
@@ -1124,11 +1063,11 @@
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
      &                    Zr_wbl, ksd_wbl, ustrc_wbl)
-      CALL mp_exchange2d (ng, tile, iNLM, 2,                            &
+      CALL mp_exchange2d (ng, tile, iNLM, 3,                            &
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
-     &                    thck_wbl, udelta_wbl)
+     &                    thck_wbl, udelta_wbl, phic_sgwbl)
 # endif
 #endif
 
@@ -1750,18 +1689,19 @@
 !
 #endif
 !
-# if defined BEDLOAD_VANDERA_MADSEN
-      SUBROUTINE angle_cwwbl( kmax, Dstp, sg_zwbl_in, u_1d, v_1d,       &
-#  ifdef BEDLOAD_VANDERA_STOKES
+#if defined SSW_LOGINT || defined BEDLOAD_VANDERA_MADSEN 
+      SUBROUTINE log_interp( kmax, Dstp, sg_loc, u_1d, v_1d,            &
+# ifdef BEDLOAD_VANDERA_STOKES
      &                        u_stokes_1d, v_stokes_1d,                 &
-#  endif
+# endif
      &                        z_r_1d, z_w_1d,                           &
      &                        ubar_1, vbar_1,                           &
-#  ifdef BEDLOAD_VANDERA_STOKES
+# ifdef BEDLOAD_VANDERA_STOKES
      &                        ubar_stokes_1, vbar_stokes_1,             &
-#  endif
-     &                        d50, zapp_loc,                            &           
-     &                        Ur_sgwbl, Vr_sgwbl )
+# endif
+     &                        d50, zapp_loc,                            &        
+     &                        Zr_sg,                                    &   
+     &                        Ur_sg, Vr_sg)
 !
 !=======================================================================
 !   Find the near-bottom current velocity in x, y dir. that corresponds! 
@@ -1783,36 +1723,29 @@
 !  Imported variable declarations.
 !
       integer,  intent(in)  :: kmax
-      real(r8), intent(in)  :: Dstp, sg_zwbl_in 
+      real(r8), intent(in)  :: Dstp, sg_loc
       real(r8), intent(in)  :: u_1d(1:kmax), v_1d(1:kmax)
-#  ifdef BEDLOAD_VANDERA_STOKES
+# ifdef BEDLOAD_VANDERA_STOKES
       real(r8), intent(in)  :: u_stokes_1d(1:kmax), v_stokes_1d(1:kmax)
-#  endif
+# endif
       real(r8), intent(in)  :: z_r_1d(1:kmax), z_w_1d(0:kmax)
       real(r8), intent(in)  :: ubar_1, vbar_1 
-#  ifdef BEDLOAD_VANDERA_STOKES
+# ifdef BEDLOAD_VANDERA_STOKES
       real(r8), intent(in)  :: ubar_stokes_1, vbar_stokes_1
-#  endif
+# endif
       real(r8), intent(in)  :: d50, zapp_loc
-      real(r8), intent(out) :: Ur_sgwbl, Vr_sgwbl
+      real(r8), intent(out) :: Zr_sg
+      real(r8), intent(out) :: Ur_sg, Vr_sg
 !
 !  Local variables. 
 !
       integer  :: k
       real(r8) :: z1, z2, Zr 
       real(r8) :: fac, fac1, fac2
-      real(r8) :: sg_zwbl_loc
-
+!
       Zr=z_r_1d(1)-z_w_1d(0)
 !
-# ifdef BEDLOAD_VANDERA_ELEVATION_LIMITER
-!
-! Add a limiter incase chosen sg_zwbl > Depth
-!
-      sg_zwbl_loc=MIN( 0.98_r8*Dstp, sg_zwbl_in )
-# endif 
-!
-      IF ( sg_zwbl_loc.ge.Zr ) THEN 
+      IF ( sg_loc.ge.Zr ) THEN 
 !
 !  If chosen height to get near bottom-current velocity lies 
 !  within any vertical level, perform logarithmic interpolation.
@@ -1820,75 +1753,64 @@
         DO k=2,kmax
           z1=z_r_1d(k-1)-z_w_1d(0)
           z2=z_r_1d(k  )-z_w_1d(0)
-          IF ( ( z1.le.sg_zwbl_loc ).and.( sg_zwbl_loc.lt.z2 )) THEN 
+          IF ( ( z1.le.sg_loc ).and.( sg_loc.lt.z2 )) THEN 
             fac=1.0_r8/LOG(z2/z1)
-            fac1=fac*LOG(z2/sg_zwbl_loc)
-            fac2=fac*LOG(sg_zwbl_loc/z1)
+            fac1=fac*LOG(z2/sg_loc)
+            fac2=fac*LOG(sg_loc/z1)
 !
-#   ifdef BEDLOAD_VANDERA_STOKES
-            Ur_sgwbl=fac1*( u_1d(k-1)+u_stokes_1d(k-1) )+               &
+# ifdef BEDLOAD_VANDERA_STOKES
+            Ur_sg=fac1*( u_1d(k-1)+u_stokes_1d(k-1) )+                  &
      &               fac2*( u_1d(k)+u_stokes_1d(k)     )    
-            Vr_sgwbl=fac1*( v_1d(k-1)+v_stokes_1d(k-1) )+               &
+            Vr_sg=fac1*( v_1d(k-1)+v_stokes_1d(k-1) )+                  &
      &               fac2*( v_1d(k)+v_stokes_1d(k)     )    
-#   else
-            Ur_sgwbl=fac1*u_1d(k-1)+fac2*u_1d(k)
-            Vr_sgwbl=fac1*v_1d(k-1)+fac2*v_1d(k)
-#   endif
+# else
+            Ur_sg=fac1*u_1d(k-1)+fac2*u_1d(k)
+            Vr_sg=fac1*v_1d(k-1)+fac2*v_1d(k)
+# endif
+            Zr_sg=sg_loc 
           ENDIF
         END DO 
-!
-! If chosen height is greater than the depth
-! then modify the the sg_zwbl, then perform the logarithmic interpolation.
-!
-       IF ( sg_zwbl_loc.gt.z2 ) THEN 
-!
-#   ifdef BEDLOAD_VANDERA_STOKES
-        Ur_sgwbl=ubar_1+ubar_stokes_1
-        Vr_sgwbl=vbar_1+vbar_stokes_1
-#   else
-        Ur_sgwbl=ubar_1
-        Vr_sgwbl=vbar_1
-#   endif
-!
-      ENDIF 
-!
-      ELSEIF ( sg_zwbl_loc.lt.Zr ) THEN 
+
+      ELSEIF ( sg_loc.lt.Zr ) THEN 
         z1=MAX( 2.5_r8*d50/30.0_r8, zapp_loc )
         z2=Zr
 !
-        IF ( sg_zwbl_loc.lt.z1 ) THEN 
+        IF ( sg_loc.lt.z1 ) THEN 
 !
 ! If chosen height is less than the bottom roughness
 ! perform linear interpolation.
 !
-          z1=sg_zwbl_loc
+          z1=sg_loc
           fac=z1/z2
 !
-#   ifdef BEDLOAD_VANDERA_STOKES
-          Ur_sgwbl=fac*(u_1d(1)+u_stokes_1d(1))
-          Vr_sgwbl=fac*(v_1d(1)+v_stokes_1d(1))
-#   else
-          Ur_sgwbl=fac*u_1d(1)
-          Vr_sgwbl=fac*v_1d(1)
-#   endif
-        ELSEIF ( sg_zwbl_loc.gt.z1 ) THEN
+# ifdef BEDLOAD_VANDERA_STOKES
+          Ur_sg=fac*(u_1d(1)+u_stokes_1d(1))
+          Vr_sg=fac*(v_1d(1)+v_stokes_1d(1))
+# else
+          Ur_sg=fac*u_1d(1)
+          Vr_sg=fac*v_1d(1)
+# endif
+          Zr_sg=sg_loc                          
+!
+        ELSEIF ( sg_loc.gt.z1 ) THEN
 !
 ! If chosen height is less than the bottom cell thickness
 ! perform logarithmic interpolation with bottom roughness.
 !
           fac=1.0_r8/LOG(z2/z1)
-          fac2=fac*LOG(sg_zwbl_loc/z1)
+          fac2=fac*LOG(sg_loc/z1)
 !
-#   ifdef BEDLOAD_VANDERA_STOKES
-          Ur_sgwbl=fac2*(u_1d(1)+u_stokes_1d(1))
-          Vr_sgwbl=fac2*(v_1d(1)+v_stokes_1d(1))
-#   else
-          Ur_sgwbl=fac2*u_1d(1)
-          Vr_sgwbl=fac2*v_1d(1)
-#   endif
+# ifdef BEDLOAD_VANDERA_STOKES
+          Ur_sg=fac2*(u_1d(1)+u_stokes_1d(1))
+          Vr_sg=fac2*(v_1d(1)+v_stokes_1d(1))
+# else
+          Ur_sg=fac2*u_1d(1)
+          Vr_sg=fac2*v_1d(1)
+# endif
+          Zr_sg=sg_loc 
         END IF
       END IF
 !
       RETURN 
-      END SUBROUTINE angle_cwwbl
+      END SUBROUTINE log_interp
 #endif 

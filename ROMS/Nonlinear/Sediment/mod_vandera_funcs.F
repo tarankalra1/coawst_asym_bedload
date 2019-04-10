@@ -261,7 +261,8 @@
       ELSE
         !fd_calc_new=MAX((mag_bstrc/(0.5_r8*udelta*udelta*rho0)),eps)
         fd_calc_new=MAX((mag_bstrc/(0.5_r8*udelta*udelta)),eps)
-        fd_calc_new=MIN(fd_calc_new,2.0_r8) 
+!        fd_calc_new=MIN(fd_calc_new,2.0_r8) 
+        fd_calc_new=fd_calc_new
       ENDIF
 !     
       RETURN
