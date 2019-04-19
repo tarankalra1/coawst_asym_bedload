@@ -69,7 +69,7 @@
      &                OCEAN(ng) % vbar,                                 &
      &                OCEAN(ng) % u,                                    &
      &                OCEAN(ng) % v,                                    &
-#if defined BEDLOAD_VANDERA_STOKES
+#if defined SSW_LOGINT_STOKES
      &                OCEAN(ng) % ubar_stokes,                          &
      &                OCEAN(ng) % vbar_stokes,                          &
      &                OCEAN(ng) % u_stokes,                             &
@@ -122,7 +122,7 @@
 #endif
      &                      bottom, rho,                                &
      &                      ubar, vbar, u, v,                           &
-#if defined BEDLOAD_VANDERA_STOKES
+#if defined SSW_LOGINT_STOKES
      &                      ubar_stokes, vbar_stokes,                   &
      &                      u_stokes, v_stokes,                         &
 #endif
@@ -185,7 +185,7 @@
       real(r8), intent(in) :: vbar(LBi:,LBj:,:)
       real(r8), intent(in) :: u(LBi:,LBj:,:,:)
       real(r8), intent(in) :: v(LBi:,LBj:,:,:)
-# if defined BEDLOAD_VANDERA_STOKES
+# if defined SSW_LOGINT_STOKES
       real(r8), intent(in) :: ubar_stokes(LBi:,LBj:)
       real(r8), intent(in) :: vbar_stokes(LBi:,LBj:)
       real(r8), intent(in) :: u_stokes(LBi:,LBj:,:)
@@ -239,7 +239,7 @@
       real(r8), intent(in) :: vbar(LBi:UBi,LBj:UBj,3)
       real(r8), intent(in) :: u(LBi:UBi,LBj:UBj,N(ng),2)
       real(r8), intent(in) :: v(LBi:UBi,LBj:UBj,N(ng),2)
-# if defined BEDLOAD_VANDERA_STOKES
+# if defined SSW_LOGINT_STOKES
       real(r8), intent(in) :: ubar_stokes(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: vbar_stokes(LBi:UBi,LBj:UBj)
       real(r8), intent(in) :: u_stokes(LBi:UBi,LBj:UBj,N(ng))
@@ -379,8 +379,15 @@
 !
 !  If using the logarithmic interpolation 
 !
-#   if defined BEDLOAD_VANDERA_MADSEN 
           Dstp=z_r(i,j,N(ng))-z_w(i,j,0)
+#   if defined CRS_FIX 
+!
+! Capping the minimum Zr for 
+! Madsen calc. to 0.9*depth and maximum to 1.0 m. 
+!
+          sg_z1min=MIN(0.9_r8*Dstp, MAX(Zr(i,j), 1.0_r8))
+!
+#   elif defined JCW_BBLTHICK
           sg_z1min=MIN(0.98_r8*Dstp,MAX(Zr(i,j), thck_wbl(i,j)*1.1_r8))
 #   else 
 ! 
@@ -391,12 +398,12 @@
 !
           CALL log_interp( N(ng), Dstp, sg_z1min,                       &
      &                 u(i,j,:,nrhs),     v(i,j,:,nrhs),                &
-#   ifdef BEDLOAD_VANDERA_STOKES     
+#   ifdef SSW_LOGINT_STOKES     
      &                 u_stokes(i,j,:),   v_stokes(i,j,:),              &
 #   endif
      &                 z_r(i,j,:),        z_w(i,j,:),                   &
      &                 ubar(i,j,nrhs),    vbar(i,j,nrhs),               &
-#   ifdef BEDLOAD_VANDERA_STOKES
+#   ifdef SSW_LOGINT_STOKES
      &                 ubar_stokes(i,j),  vbar_stokes(i,j),             &
 #   endif
      &                 bottom(i,j,isd50), bottom(i,j,izapp),            &
@@ -405,14 +412,14 @@
 !
 ! end of SSW_LOGINT
 !
-#  else 
+#  else
 !
 ! Regular method to get reference velocity for Madsen
 ! without using log interp by the bottom cell. 
 !
           Ur_sg(i,j)=u(i,j,1,nrhs)
           Vr_sg(i,j)=v(i,j,1,nrhs)
-#   ifdef BEDLOAD_VANDERA_STOKES
+#   ifdef SSW_LOGINT_STOKES
           Ur_sg(i,j)=Ur_sg(i,j)+u_stokes(i,j,1)
           Vr_sg(i,j)=Vr_sg(i,j)+v_stokes(i,j,1)
 #   endif
@@ -786,12 +793,12 @@
 !
           CALL log_interp( N(ng), Dstp, cff1,                           &
      &                 u(i,j,:,nrhs),     v(i,j,:,nrhs),                &
-#   ifdef BEDLOAD_VANDERA_STOKES     
+#   ifdef SSW_LOGINT_STOKES     
      &                 u_stokes(i,j,:),   v_stokes(i,j,:),              &
 #   endif 
      &                 z_r(i,j,:),        z_w(i,j,:),                   &
      &                 ubar(i,j,nrhs),    vbar(i,j,nrhs),               &
-#   ifdef BEDLOAD_VANDERA_STOKES
+#   ifdef SSW_LOGINT_STOKES
      &                 ubar_stokes(i,j),  vbar_stokes(i,j),             &
 #   endif 
      &                 bottom(i,j,isd50), bottom(i,j,izapp),            & 
@@ -1553,9 +1560,10 @@
 !
 !  Imported variable declarations.
 !
-      real(r8), intent(in) ::  ubr, wr, ucr, zr, phiwc, kN, Dstp
-      real(r8), intent(out) :: ustrc, ustrwm, ustrr, fwc, zoa
-      real(r8), intent(out) :: dwc_va
+      real(r8), intent(in)    :: ubr, wr, ucr, zr, phiwc, Dstp
+      real(r8), intent(inout) :: kN
+      real(r8), intent(out)   :: ustrc, ustrwm, ustrr, fwc, zoa
+      real(r8), intent(out)   :: dwc_va
 !
 !  Local variable declarations.
 !
@@ -1584,7 +1592,9 @@
       ustrc=dval
       ustrwm=dval
       ustrr=dval
-      fwc=0.4_r8
+#ifdef CRS_FIX 
+      kN=MIN(kN,0.9_r8*zr) 
+#endif 
       zoa=kN/30.0_r8
       phicwc=phiwc
 
@@ -1612,6 +1622,21 @@
       Cmu(1)=1.0_r8
 
       cukw=Cmu(1)*ubr/(kN*wr)
+#if defined CRS_FIX 	
+!
+! New fwc CRS calculation 
+!
+      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+        fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+      ELSE IF (cukw.gt.100.0_r8) THEN
+        fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+      ELSE
+        fwci(1)=0.3_r8 
+      END IF
+#else  
+!
+! Original method fwc calculation 
+!
       IF ((cukw.gt.0.2_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
         fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
       ELSE IF ((cukw.gt.100.).and.(cukw.le.10000.0_r8)) THEN
@@ -1621,14 +1646,18 @@
       ELSE
         fwci(1)=Cmu(1)*0.43_r8
       END IF
+#endif
+!
       ustrwm2(1)=0.5_r8*fwci(1)*ubr*ubr                       ! Eq 29
       ustrr2(1)=Cmu(1)*ustrwm2(1)                             ! Eq 26
       ustrr=SQRT(ustrr2(1))
       IF (cukw.ge.8.0_r8) THEN
-        dwc(1)=2.0_r8*vonKar*ustrr/wr                         ! Eq 36
-# ifdef JCW_BBLTHICK
-        dwc(1)=MAX(zo,MIN(0.97_r8*zr,dwc(1)))
-# endif
+        dwc(1)=2.0_r8*vonKar*ustrr/wr 
+# if defined   JCW_BBLTHICK 
+        dwc(1)=MAX( zo, MIN( 0.97_r8*zr, dwc(1)) )
+# elif defined CRS_FIX 
+	dwc(1)=MIN( 0.9_r8*zr, dwc(1) )
+# endif 
       ELSE
         dwc(1)=kN
       END IF
@@ -1647,6 +1676,21 @@
         Cmu(i)=SQRT(1.0_r8+                                             &
      &              2.0_r8*rmu(i)*cosphiwc+rmu(i)*rmu(i))     ! Eq 27
         cukw=Cmu(i)*ubr/(kN*wr)
+#ifdef CRS_FIX
+!
+! New fwc CRS calculation 
+!
+        IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+          fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+        ELSE IF (cukw.gt.100.0_r8) THEN
+          fwci(i)=Cmu(i)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+        ELSE
+          fwci(i)=0.3_r8 
+        END IF
+#else
+!
+! Original method fwc calculation 
+!
         IF ((cukw.gt.0.2_r8).and.(cukw.le.100.0_r8)) THEN     ! Eq 32/33
           fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
         ELSE IF ((cukw.gt.100.).and.(cukw.le.10000.0_r8)) THEN
@@ -1656,15 +1700,19 @@
         ELSE
           fwci(i)=Cmu(i)*0.43_r8
         END IF
+#endif 
+!
         ustrwm2(i)=0.5_r8*fwci(i)*ubr*ubr                     ! Eq 29
         ustrr2(i)=Cmu(i)*ustrwm2(i)                           ! Eq 26
         ustrr=SQRT(ustrr2(i))
 !!      IF ((Cmu(1)*ubr/(kN*wr)).ge.8.0_r8) THEN  ! HGA Why 1?
         IF (cukw.ge.8.0_r8) THEN
           dwc(i)=2.0_r8*vonKar*ustrr/wr                       ! Eq 36
-# ifdef JCW_BBLTHICK
-          dwc(i)=MAX(zo,MIN(0.97_r8*zr,dwc(i)))
-# endif
+# if defined JCW_BBLTHICK
+          dwc(i)=MAX( zo, MIN( 0.97_r8*zr, dwc(i) ) )
+# elif defined CRS_FIX 
+	  dwc(i)=MIN( 0.9_r8*zr, dwc(i) )
+# endif 
         ELSE
           dwc(i)=kN
         END IF
@@ -1691,16 +1739,16 @@
 !
 #if defined SSW_LOGINT || defined BEDLOAD_VANDERA_MADSEN 
       SUBROUTINE log_interp( kmax, Dstp, sg_loc, u_1d, v_1d,            &
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
      &                        u_stokes_1d, v_stokes_1d,                 &
 # endif
      &                        z_r_1d, z_w_1d,                           &
      &                        ubar_1, vbar_1,                           &
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
      &                        ubar_stokes_1, vbar_stokes_1,             &
 # endif
-     &                        d50, zapp_loc,                            &        
-     &                        Zr_sg,                                    &   
+     &                        d50, zapp_loc,                            & 
+     &                        Zr_sg,                                    & 
      &                        Ur_sg, Vr_sg)
 !
 !=======================================================================
@@ -1725,12 +1773,12 @@
       integer,  intent(in)  :: kmax
       real(r8), intent(in)  :: Dstp, sg_loc
       real(r8), intent(in)  :: u_1d(1:kmax), v_1d(1:kmax)
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
       real(r8), intent(in)  :: u_stokes_1d(1:kmax), v_stokes_1d(1:kmax)
 # endif
       real(r8), intent(in)  :: z_r_1d(1:kmax), z_w_1d(0:kmax)
       real(r8), intent(in)  :: ubar_1, vbar_1 
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
       real(r8), intent(in)  :: ubar_stokes_1, vbar_stokes_1
 # endif
       real(r8), intent(in)  :: d50, zapp_loc
@@ -1758,7 +1806,7 @@
             fac1=fac*LOG(z2/sg_loc)
             fac2=fac*LOG(sg_loc/z1)
 !
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
             Ur_sg=fac1*( u_1d(k-1)+u_stokes_1d(k-1) )+                  &
      &               fac2*( u_1d(k)+u_stokes_1d(k)     )    
             Vr_sg=fac1*( v_1d(k-1)+v_stokes_1d(k-1) )+                  &
@@ -1783,7 +1831,7 @@
           z1=sg_loc
           fac=z1/z2
 !
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
           Ur_sg=fac*(u_1d(1)+u_stokes_1d(1))
           Vr_sg=fac*(v_1d(1)+v_stokes_1d(1))
 # else
@@ -1800,7 +1848,7 @@
           fac=1.0_r8/LOG(z2/z1)
           fac2=fac*LOG(sg_loc/z1)
 !
-# ifdef BEDLOAD_VANDERA_STOKES
+# ifdef SSW_LOGINT_STOKES
           Ur_sg=fac2*(u_1d(1)+u_stokes_1d(1))
           Vr_sg=fac2*(v_1d(1)+v_stokes_1d(1))
 # else
