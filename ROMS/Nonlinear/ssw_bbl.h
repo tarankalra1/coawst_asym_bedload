@@ -382,10 +382,9 @@
           Dstp=z_r(i,j,N(ng))-z_w(i,j,0)
 #   if defined CRS_FIX 
 !
-! Capping the minimum Zr for 
-! Madsen calc. to 0.9*depth and maximum to 1.0 m. 
+! Capping the minimum Zr for Madsen calc. to 0.9*depth. 
 !
-          sg_z1min=MIN(0.9_r8*Dstp, MAX(Zr(i,j), 1.0_r8))
+          sg_z1min=MIN(0.9_r8*Dstp, MAX(Zr(i,j), sg_z1min))
 !
 #   elif defined JCW_BBLTHICK
           sg_z1min=MIN(0.98_r8*Dstp,MAX(Zr(i,j), thck_wbl(i,j)*1.1_r8))
@@ -1626,12 +1625,11 @@
 !
 ! New fwc CRS calculation 
 !
+      fwci(1)=Cmu(1)*0.3_r8 
       IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
         fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
       ELSE IF (cukw.gt.100.0_r8) THEN
         fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
-      ELSE
-        fwci(1)=0.3_r8 
       END IF
 #else  
 !
@@ -1680,12 +1678,11 @@
 !
 ! New fwc CRS calculation 
 !
+        fwci(i)=Cmu(i)*0.3_r8 
         IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
           fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
         ELSE IF (cukw.gt.100.0_r8) THEN
           fwci(i)=Cmu(i)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
-        ELSE
-          fwci(i)=0.3_r8 
         END IF
 #else
 !
