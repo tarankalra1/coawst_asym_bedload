@@ -1,12 +1,11 @@
 Van Der A formulation 
 Using logarithmic interpolation 
 
-Flags
--------------------------------------------------------------------
-\# SSW_LOGINT                            --> Logarithmic interpolation 
--------------------------------------------------------------------
-\# SSW_LOGINT_STOKES                     --> Madsen calculation to utilize Stokes flow velocity components
--------------------------------------------------------------------
+\Flags
+--> Logarithmic interpolation 
+\# SSW_LOGINT                            
+--> Madsen calculation to utilize Stokes flow velocity components
+\# SSW_LOGINT_STOKES       
 
 Using bedload flags
 -------------------------------------------------------------------
