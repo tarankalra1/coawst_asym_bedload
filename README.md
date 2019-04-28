@@ -9,8 +9,8 @@ Using logarithmic interpolation
 
 Using bedload flags
 -------------------------------------------------------------------
-if defined BEDLOAD_VANDERA 
-if defined BEDLOAD_VANDERA_MADSEN      --> Madsen calculation for near bottom current velocity calculation for bedload  
+\# BEDLOAD_VANDERA 
+ \# BEDLOAD_VANDERA_MADSEN      --> Madsen calculation for near bottom current velocity calculation for bedload  
 -------------------------------------------------------------------
 if defined BEDLOAD_VANDERA_CALC_WB    --> Madsen calculation for near bottom current velocity with a fixed elevation
 -------------------------------------------------------------------
