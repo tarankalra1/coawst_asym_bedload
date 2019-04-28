@@ -11,7 +11,7 @@ Options.
 Using bedload options.
 -- BEDLOAD_VANDERA 
 
-4) Madsen calculation for near bottom current velocity calculation for bedload  
+4) Madsen calculation for near bottom current velocity calculation for bedload
 -- BEDLOAD_VANDERA_MADSEN     
 
 5) Madsen calculation for near bottom current velocity with a fixed elevation
