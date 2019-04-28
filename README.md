@@ -7,10 +7,9 @@ Using logarithmic interpolation
 --> Madsen calculation to utilize Stokes flow velocity components
 \# SSW_LOGINT_STOKES       
 
-Using bedload flags
--------------------------------------------------------------------
+Using bedload options.
 \# BEDLOAD_VANDERA 
- \# BEDLOAD_VANDERA_MADSEN      --> Madsen calculation for near bottom current velocity calculation for bedload  
+ \# BEDLOAD_VANDERA_MADSEN     Madsen calculation for near bottom current velocity calculation for bedload  
 -------------------------------------------------------------------
 if defined BEDLOAD_VANDERA_CALC_WB    --> Madsen calculation for near bottom current velocity with a fixed elevation
 -------------------------------------------------------------------
