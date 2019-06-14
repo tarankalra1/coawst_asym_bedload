@@ -79,10 +79,12 @@
      &                OCEAN(ng) % zeta,                                 &
 #endif
 #if defined BEDLOAD_VANDERA_MADSEN
-     &                SEDBED(ng) % Zr_wbl,                              &
      &                SEDBED(ng) % ksd_wbl,                             &
      &                SEDBED(ng) % ustrc_wbl,                           &
      &                SEDBED(ng) % thck_wbl,                            &
+#endif 
+# if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA      
+     &                SEDBED(ng) % Zr_wbl,                              &
      &                SEDBED(ng) % udelta_wbl,                          &
      &                SEDBED(ng) % phic_sgwbl,                          & 
 #endif
@@ -130,9 +132,10 @@
      &                      zeta,                                       &
 #endif
 #if defined BEDLOAD_VANDERA_MADSEN
-     &                      Zr_wbl, ksd_wbl, ustrc_wbl,                 &
-     &                      thck_wbl, udelta_wbl,                       &
-     &                      phic_sgwbl,                                 &
+     &                      ksd_wbl, ustrc_wbl, thck_wbl,               &
+#endif      
+#if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA      
+     &                      Zr_wbl, udelta_wbl, phic_sgwbl,             &
 #endif
      &                      Iconv,                                      &
      &                      Ubot, Vbot, Ur, Vr,                         &
@@ -195,13 +198,15 @@
       real(r8), intent(in) :: zeta(LBi:,LBj:,:)
 # endif
 # if defined BEDLOAD_VANDERA_MADSEN
-      real(r8), intent(inout) :: Zr_wbl(LBi:,LBj:)
       real(r8), intent(inout) :: ksd_wbl(LBi:,LBj:)
       real(r8), intent(inout) :: ustrc_wbl(LBi:,LBj:)
       real(r8), intent(inout) :: thck_wbl(LBi:,LBj:)
+# endif
+# if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA      
+      real(r8), intent(inout) :: Zr_wbl(LBi:,LBj:)
       real(r8), intent(inout) :: udelta_wbl(LBi:,LBj:)
       real(r8), intent(inout) :: phic_sgwbl(LBi:,LBj:)
-# endif
+# endif 
       real(r8), intent(out) :: Ubot(LBi:,LBj:)
       real(r8), intent(out) :: Vbot(LBi:,LBj:)
       real(r8), intent(out) :: Ur(LBi:,LBj:)
@@ -249,10 +254,12 @@
       real(r8), intent(in) :: zeta(LBi:UBi,LBj:UBj,3)
 # endif
 # if defined BEDLOAD_VANDERA_MADSEN
-      real(r8), intent(inout) :: Zr_wbl(LBi:UBi,LBj:UBj)
+      real(r8), intent(inout) :: thck_wbl(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: ksd_wbl(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: ustrc_wbl(LBi:UBi,LBj:UBj)
-      real(r8), intent(inout) :: thck_wbl(LBi:UBi,LBj:UBj)
+# endif
+# if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA      
+      real(r8), intent(inout) :: Zr_wbl(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: udelta_wbl(LBi:UBi,LBj:UBj)
       real(r8), intent(inout) :: phic_sgwbl(LBi:UBi,LBj:UBj)
 # endif
@@ -354,7 +361,7 @@
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: wrk
 #  endif
 !
-#  if defined BEDLOAD_VANDERA_MADSEN
+#  if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA      
 !
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: Ur_sgwbl
       real(r8), dimension(IminS:ImaxS,JminS:JmaxS) :: Vr_sgwbl
@@ -757,9 +764,11 @@
         END DO
       END DO
 !
-#  if defined BEDLOAD_VANDERA_MADSEN
+#  if defined BEDLOAD_VANDERA_MADSEN 
 ! 
-! Find the near-bottom current velocity at a given elevation
+! Find the near-bottom current velocity(udelta) at a given elevation.
+! Use the Madsen output of current shear stress, apparent roughness
+! to get udelta.
 ! Find the angle at that near-bottom current velocity. 
 !
       DO j=JstrV-1,Jend+1
@@ -825,7 +834,58 @@
           ENDIF
         END DO
       END DO
-#  endif 
+#  endif
+
+#  if defined BEDLOAD_VANDERA_DIRECT_UDELTA
+! 
+! Find the near-bottom current velocity directly at a given
+! elevation (doesnot require Madsen output)
+! Find the angle at that near-bottom current velocity. 
+!
+      DO j=JstrV-1,Jend+1
+        DO i=IstrU-1,Iend+1
+!
+          Dstp=z_r(i,j,N(ng))-z_w(i,j,0)
+          cff=MIN( 0.98_r8*Dstp, sg_zwbl(ng) )
+          CALL log_interp( N(ng), Dstp, cff,                            &
+     &                 u(i,j,:,nrhs),     v(i,j,:,nrhs),                &
+#   ifdef SSW_LOGINT_STOKES     
+     &                 u_stokes(i,j,:),   v_stokes(i,j,:),              &
+#   endif 
+     &                 z_r(i,j,:),        z_w(i,j,:),                   &
+     &                 ubar(i,j,nrhs),    vbar(i,j,nrhs),               &
+#   ifdef SSW_LOGINT_STOKES
+     &                 ubar_stokes(i,j),  vbar_stokes(i,j),             &
+#   endif 
+     &                 bottom(i,j,isd50), bottom(i,j,izapp),            & 
+     &                 Zr_wbl(i,j),                                     & 
+     &                 Ur_sgwbl(i,j),     Vr_sgwbl(i,j) )
+!
+        END DO
+      END DO
+!
+!  Compute udelta along with angle at that elevation.
+!
+      DO j=JstrV-1,Jend
+        DO i=IstrU-1,Iend
+!
+!  Compute bottom current magnitude at RHO-points.
+!
+          Ucur_sgwbl=0.5_r8*(Ur_sgwbl(i,j)+Ur_sgwbl(i+1,j))
+          Vcur_sgwbl=0.5_r8*(Vr_sgwbl(i,j)+Vr_sgwbl(i,j+1))
+          
+          udelta_wbl(i,j)=SQRT(Ur_sgwbl(i,j)*Ur_sgwbl(i,j)+             &
+     &                         Vr_sgwbl(i,j)*Vr_sgwbl(i,j)+eps)
+!
+          IF (Ucur_sgwbl.eq.0.0_r8) THEN
+            phic_sgwbl(i,j)=0.5_r8*pi*SIGN(1.0_r8,Vcur_sgwbl)
+          ELSE
+            phic_sgwbl(i,j)=ATAN2(Vcur_sgwbl,Ucur_sgwbl)
+          ENDIF
+        END DO
+      END DO
+!
+#  endif
 !
 !-----------------------------------------------------------------------
 !  Compute kinematic bottom stress components due current and wind-
@@ -1009,9 +1069,6 @@
 #if defined BEDLOAD_VANDERA_MADSEN
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
-     &                  Zr_wbl)
-      CALL bc_r2d_tile (ng, tile,                                       &
-     &                  LBi, UBi, LBj, UBj,                             &
      &                  ksd_wbl)
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
@@ -1019,13 +1076,18 @@
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
      &                  thck_wbl)
+#endif
+#if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA
+      CALL bc_r2d_tile (ng, tile,                                       &
+     &                  LBi, UBi, LBj, UBj,                             &
+     &                  Zr_wbl)
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
      &                  udelta_wbl)
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
      &                  phic_sgwbl)
-#endif
+#endif 
 #ifdef DISTRIBUTE
       CALL mp_exchange2d (ng, tile, iNLM, 4,                            &
      &                    LBi, UBi, LBj, UBj,                           &
@@ -1068,12 +1130,14 @@
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
-     &                    Zr_wbl, ksd_wbl, ustrc_wbl)
+     &                    ksd_wbl, ustrc_wbl, thck_wbl)
+# endif
+# if defined BEDLOAD_VANDERA_MADSEN || defined BEDLOAD_VANDERA_DIRECT_UDELTA
       CALL mp_exchange2d (ng, tile, iNLM, 3,                            &
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
-     &                    thck_wbl, udelta_wbl, phic_sgwbl)
+     &                    zr_wbl, udelta_wbl, phic_sgwbl)
 # endif
 #endif
 

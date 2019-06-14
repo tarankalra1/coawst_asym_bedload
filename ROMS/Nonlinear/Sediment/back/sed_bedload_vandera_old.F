@@ -1371,7 +1371,7 @@
 !  Local variables
 ! 
       integer  :: iter
-      integer,  parameter :: total_iters=15
+      integer,  parameter :: total_iters=10
       real(r8), parameter :: tol=0.001_r8, von_k=0.41_r8
       real(r8), parameter :: eps=1.0E-14_r8
       real(r8), parameter :: crs_fac=1.0_r8
@@ -1410,8 +1410,8 @@
       theta_timeavg_old=0.0_r8
 !
 # if defined BEDLOAD_VANDERA_MADSEN 
-      fd=fd_calc_madsen(udelta, mag_bstrc)
-# elif defined BEDLOAD_VANDERA_ZEROCURR
+      fd=fd_calc_new(udelta, mag_bstrc)
+# elif BEDLOAD_VANDERA_ZEROCURR
       fd=0.0_r8
 # endif 
 !
@@ -1425,28 +1425,56 @@
 !
         fw=fw_calc(ahat, ksw)
 !
-# if defined BEDLOAD_VANDERA_DIRECT_UDELTA 
-! 
-! Calculate current-related bed roughness from VA2013 Appendix A.1
-! dont need ksd if fd is directly computed from mag_bustrc 
-        ksd=ksd_calc(d50, d90, mu_calc(d50), theta_timeavg, eta, rlen)
-!
-! Calculate friction factor from ksd, udelta, delta 
-! 
-        fd=fd_calc_santoss(udelta, sg_zwbl(ng), ksd)
-!
-# endif 
-!
 ! Calculate Time-averaged absolute Shields stress VA2013 Appendix Eq. A.3
 ! 
+#if defined BEDLOAD_VANDERA_MADSEN
         theta_timeavg=osmgd*(0.5_r8*fd*udelta**2.0_r8+                  &
      &                       0.25_r8*fw*uhat**2.0_r8)
+#else
+        theta_timeavg=osmgd*(mag_bstrc+0.25_r8*fw*uhat**2.0_r8)
+#endif 
 !
         IF(ABS(theta_timeavg-theta_timeavg_old).lt.tol) THEN
           EXIT
         ENDIF
         theta_timeavg_old=theta_timeavg
       END DO
+!
+#if ! defined BEDLOAD_VANDERA_MADSEN 
+!
+! Calculate full-cycle current friction factor from VA2013 Eqn. 20
+! 
+!      fd=fd_calc(umag_curr, Zref, ksd)
+! 
+! Calculate current-related bed roughness from VA2013 Appendix A.1
+! dont need ksd if fd is directly computed from mag_bustrc 
+      ksd=ksd_calc(d50, d90, mu_calc(d50), theta_timeavg, eta, rlen)
+!
+! This is commented now because we calculate current friction factor
+! from current-based shear stress 
+! udelta is the current velocity at the wave boundary layer 
+!      ustarw=0.5_r8*fw*uhat**2.0_r8 
+!
+      ustarw=SQRT(0.5_r8*fw*uhat**2.0_r8)
+      delw=2.0_r8*von_k*ustarw/omega
+!
+      IF(thck_wbl_inp(ng).gt.0.0_r8) THEN 
+        delw=thck_wbl_inp(ng)
+      ENDIF 
+!
+! Can also hardwire delw
+! Calculate the current velocity at a location at the height of wave boundary layer
+!
+      ustrc=SQRT(mag_bstrc)  ! ustarc 
+      IF(uhat.eq.0.0_r8) THEN 
+        udelta=0.05_r8
+      ELSE 
+        udelta=MAX( ((ustrc/von_k)*log(30.0*delw/ksd)), eps )
+      ENDIF 
+!       
+      fd=fd_calc_new(udelta, mag_bstrc)
+!
+#endif 
 !
 ! Calculate full-cycle current friction factor from VA2013 Eqn. 20
 ! use the stress from COAWST and corresponding current velocity 
