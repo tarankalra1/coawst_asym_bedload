@@ -1931,7 +1931,7 @@
       RR=0.5_r8*(1.0_r8+b*SIN(phi_new))
 !
 #  ifdef BEDLOAD_VANDERA_ASYM_LIMITS 
-      RR=MAX(RR,0.65_r8)
+      RR=MIN(RR,0.65_r8)
 #  else
       RR=RR
 #  endif       
@@ -1960,7 +1960,7 @@
       beta=0.5_r8+(betar_0-0.5_r8)*cff
 !
 #  ifdef BEDLOAD_VANDERA_ASYM_LIMITS 
-      beta=MAX(beta,0.65_r8)
+      beta=MIN(beta,0.65_r8)
 #  else
       beta=beta
 #  endif       
