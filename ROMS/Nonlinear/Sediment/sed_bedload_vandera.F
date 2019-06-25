@@ -1459,10 +1459,11 @@
       c_w=2*pi/(k_wn*Td)          ! Wave speed
       alpha_w=0.424_r8
 !
-      tau_wRe=0.0_r8
 !
 #  ifdef BEDLOAD_VANDERA_WAVE_AVGD_STRESS
       tau_wRe=MAX((rho0*fwd*alpha_w*uhat**3.0_r8/(2.0_r8*c_w)),eps)
+#  else 
+      tau_wRe=0.0_r8
 #  endif
 !        
 ! Compute the change in time period based on converged udelta 
@@ -1929,7 +1930,7 @@
 !
       RR=0.5_r8*(1.0_r8+b*SIN(phi_new))
 !
-#  ifdef BEDLOAD_ASYM_LIMITS 
+#  ifdef BEDLOAD_VANDERA_ASYM_LIMITS 
       RR=MAX(RR,0.65_r8)
 #  else
       RR=RR
@@ -1958,7 +1959,7 @@
       cff=SIN((0.5_r8*pi-ABS(phi_new))*F0)/SIN(0.5_r8*pi*F0)
       beta=0.5_r8+(betar_0-0.5_r8)*cff
 !
-#  ifdef BEDLOAD_ASYM_LIMITS 
+#  ifdef BEDLOAD_VANDERA_ASYM_LIMITS 
       beta=MAX(beta,0.65_r8)
 #  else
       beta=beta
