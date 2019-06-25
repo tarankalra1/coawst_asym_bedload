@@ -1928,6 +1928,12 @@
 ! MD, equation 17
 !
       RR=0.5_r8*(1.0_r8+b*SIN(phi_new))
+!
+#  ifdef BEDLOAD_ASYM_LIMITS 
+      RR=MAX(RR,0.65_r8)
+#  else
+      RR=RR
+#  endif       
 ! 
 ! MD, under equation 18
 ! 
@@ -1951,6 +1957,13 @@
 !
       cff=SIN((0.5_r8*pi-ABS(phi_new))*F0)/SIN(0.5_r8*pi*F0)
       beta=0.5_r8+(betar_0-0.5_r8)*cff
+!
+#  ifdef BEDLOAD_ASYM_LIMITS 
+      beta=MAX(beta,0.65_r8)
+#  else
+      beta=beta
+#  endif       
+! 
 !
 ! MD, Table 1, get asymmetry parameterization
 ! using GSSO (10a,b)
